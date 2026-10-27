@@ -1,0 +1,36 @@
+{
+  "execution": "local CPU, real Python/PyTorch worker processes; not containers or GPUs",
+  "cold_request_ms": 1102.18054195866,
+  "warm_requests": 10,
+  "warm_median_ms": 0.9876459953375161,
+  "warm_p95_nearest_rank_ms": 1.274041016586125,
+  "concurrent_requests_succeeded": 12,
+  "worker_limit": 2,
+  "metrics_before_idle_reclaim": {
+    "admitted_requests": 0,
+    "cold_starts": 6,
+    "completed": 25,
+    "evictions": 4,
+    "failures": 0,
+    "idle_expirations": 0,
+    "rejected": 0,
+    "request_capacity": 16,
+    "warm_hits": 19,
+    "worker_limit": 2,
+    "workers": 2
+  },
+  "metrics_after_idle_reclaim": {
+    "admitted_requests": 0,
+    "cold_starts": 6,
+    "completed": 25,
+    "evictions": 4,
+    "failures": 0,
+    "idle_expirations": 2,
+    "rejected": 0,
+    "request_capacity": 16,
+    "warm_hits": 19,
+    "worker_limit": 2,
+    "workers": 0
+  },
+  "warning": "Tiny randomly initialized text model, not a pretrained LLM. Ten warm observations are not a production latency study."
+}

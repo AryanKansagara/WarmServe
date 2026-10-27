@@ -43,6 +43,12 @@ The benchmark builds and launches the gateway, launches real PyTorch processes, 
 
 ## Deployment and next milestones
 
+### Capacity-placement extension
+
+The independent Go package `placement` models a centralized resource scheduler over simulated nodes. It filters CPU/memory/GPU feasibility and availability, then uses normalized CPU+memory slack to choose a best-fit node, with deterministic ties and a preference to preserve GPU nodes for GPU requests. Mutex-protected reservations are idempotent by job ID; conflicting requests are rejected. Release reclaims capacity exactly once. Snapshots return copied state. This package is **not connected to the inference gateway or real cluster nodes**.
+
+Twelve additional race-enabled tests cover placement, GPU/memory exhaustion, release, idempotency, invalidation/conflicts, availability, deterministic choices and concurrent accounting. A 200-request stress case on five simulated nodes admitted exactly 100 CPU-feasible jobs, observed no overcommit, and reclaimed all capacity. The package had 100% statement coverage in this local test run; the whole repository now has 31 test functions. Coverage does not establish production reliability. Run `go test -race -count=1 -cover ./...` and see [placement notes](docs/PLACEMENT.md).
+
 `Dockerfile` and `k8s/deployment.yaml` provide a non-root container and a single-replica deployment with resource requests, limits and health probes. **These templates were not executed: Docker was unavailable in the development environment.** Build `warmserve:local` and load it into your cluster before applying the manifest. There is no multi-replica coordinator or GPU scheduler.
 
 Completed milestones: lifecycle-aware pool; bounded HTTP gateway; failure/concurrency tests; real-process benchmark. Next: measure a pretrained model on a GPU-backed vLLM server, separate queue/load/inference timing, add shared resource accounting and compare batching policies under controlled load. TensorRT, Triton, Ray, CUDA and training orchestration are not implemented. `ci/github-actions.yml` is an inactive workflow template; move it into `.github/workflows` to enable it.
